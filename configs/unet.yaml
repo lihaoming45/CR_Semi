@@ -1,0 +1,7 @@
+base_lr: 0.0001
+batch_size: 1
+cuda_id: 0
+dataset_dir: null
+log_every_epoch: 10
+n_epochs: 150
+is_semi: False
