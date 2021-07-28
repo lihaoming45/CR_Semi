@@ -131,13 +131,12 @@ def train(cfg):
                     patch_num = patch_num.cpu().numpy()
                     out = net(x)
 
-                    if cfg.model_name in ['unet','aspp']:
-                        # ----------------segloss setting----------------
-                        seg_loss = F.cross_entropy(out, y.long())
-                        # ----------------segloss setting----------------
-
-                    elif cfg.model_name in ['cr','pr']:
+                    if cfg.model_name in ['cr','pr']:
                         out = out['fine']
+
+                    # ----------------segloss setting----------------
+                    seg_loss = F.cross_entropy(out, y.long())
+                    # ----------------segloss setting----------------
 
                     loss = seg_loss
                     epoch_val_losses.append(loss.item())
@@ -163,6 +162,8 @@ def train(cfg):
                         np.mean(testEpo_eval[4]), np.mean(testEpo_eval[5]))
 
                     test_iterator.set_description(status)
+
+
                 test_iterator.close()
             mean_status_list = np.mean(status_list, axis=0)
             description = 'spliceEval:Test_epoch={} -- diceF={:.4f} -- diceO={:.4f} -- hdF={:.3f} -- hdO={:.3f} -- asdF={:.3f} -- asdO={:.3f}'.format(
@@ -171,8 +172,8 @@ def train(cfg):
             print(description)
 
 
-            if np.mean(testEpo_eval[0]) > 0.85:
-                torch.save(net.state_dict(), os.path.join(models_path, '_'.join(["Unet_3D", str(epoch + 1)])))
+            if np.mean(testEpo_eval[0]) > 0.86:
+                torch.save(net.state_dict(), os.path.join(models_path, '_'.join([cfg.model_name, str(epoch + 1)])))
 
     writer.close()
 
