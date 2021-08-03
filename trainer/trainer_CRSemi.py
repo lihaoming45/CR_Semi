@@ -1,8 +1,7 @@
 import os
 from torch.utils.data import DataLoader
-
 from models.asym_bakcbone import asym_model
-from models.PointRend_CRSemi import PointRend, PointHead
+from models.Rend_CRSemi import PointRend, PointHead
 from utils.sampling_point2 import point_sample, constrastive_learning
 import torch
 from torch import optim
@@ -12,7 +11,7 @@ from tqdm import tqdm
 import logging
 from utils.utils import eval_metric, patch_splice
 from tensorboardX import SummaryWriter
-from dataop.generator4_CRSemi import train_val_loader,create_list_MYGE
+from dataop.generator_CRSemi import train_val_loader,create_list_MYGE
 from dataop.dataloader_Sampler import TwoStreamBatchSampler, uncertainty_eval_CRSim, get_current_consistency_weight, \
     softmax_mse_loss, update_ema_variables
 from dataop import ramps

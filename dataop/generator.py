@@ -1,18 +1,13 @@
 import os
 import glob
-import random
-# from albumentations.augmentations.transforms import Rotate
 from torch.utils.data import Dataset, DataLoader, ConcatDataset
 import torch
-import nibabel as nib
 import SimpleITK as sitk
 import numpy as np
-import cv2 as cv
-import transforms as transforms
-from hdf5 import SliceBuilder
+import utils.transforms as transforms
+from utils.hdf5 import SliceBuilder
 import random
-from resize_3D import itk_resample
-# from utils import foll_count, edge_mask
+from utils.resize_3D import itk_resample
 
 
 class MySet(Dataset):
@@ -33,11 +28,7 @@ class MySet(Dataset):
         if self.label is not None:
             self.label[self.label == 128] = 1
             self.label[self.label == 255] = 2
-            # self.label[self.label==3]=0
-            # self.label[self.label==1]=4
-            # self.label = self.label/2
             self.label = self.label.astype(np.uint8)
-            # self.edge_label = edge_mask(self.label)
 
         if aug_decision and self.label is not None:
             self.data, self.label = self.transform_pro(trans_builder=self.transformer_builder, data=self.data,
@@ -70,15 +61,6 @@ class MySet(Dataset):
         else:
             mask = None
 
-        # numFoll_class = foll_count(mask)
-        # edge_mask=self.edge_label[label_idx]
-
-        # data = ndarray_nearest_neighbour_scaling(data, 224, 128)
-        # mask = ndarray_nearest_neighbour_scaling(mask, 224, 128)
-
-        # if self.aug_decision == False:
-        #     data = self.normalize2(data)
-
         data = data.astype(np.float32)
         data = np.expand_dims(data, axis=0)  # 输入channel=1
         data_tensor = torch.from_numpy(data)
@@ -93,7 +75,6 @@ class MySet(Dataset):
         else:
             mask_tensor = 0
             self.label = 0
-        # numFoll_tensor = torch.from_numpy(np.array(numFoll_class))
 
         if self.phase == 'train':
             return data_tensor, mask_tensor,mask_CR, idx

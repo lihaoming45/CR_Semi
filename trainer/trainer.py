@@ -10,8 +10,8 @@ from tqdm import tqdm
 import logging
 from utils.utils import dice_loss, eval_metric, dice_focal_loss, patch_splice, judge_fn
 from tensorboardX import SummaryWriter
-from dataop.MY_GE_generator import train_val_loader
-from dataop.MY_GE_generator import create_list_MYGE
+from dataop.generator import train_val_loader
+from dataop.generator import create_list_MYGE
 from apex import amp
 
 
